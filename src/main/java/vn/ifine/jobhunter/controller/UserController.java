@@ -26,15 +26,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/userss")
+    @PostMapping("/users")
     public ResponseEntity<User> createNewUser(@RequestBody User user) {
         User newUser = this.userService.handleCreateUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
-    }
-
-    @ExceptionHandler(value = IdInvalidException.class)
-    public ResponseEntity<String> handleIdException(IdInvalidException idException) {
-        return ResponseEntity.badRequest().body(idException.getMessage());
     }
 
     @DeleteMapping("/users/{id}")
