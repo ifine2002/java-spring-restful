@@ -1,6 +1,8 @@
 package vn.ifine.jobhunter.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.ifine.jobhunter.domain.User;
@@ -15,14 +17,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/create")
-    public String createNewUser() {
-        User user = new User();
-        user.setEmail("buivandoan@gmail.com");
-        user.setName("Bùi Đoàn");
-        user.setPassword("123456");
-
-        this.userService.handleCreateUser(user);
-        return "Create user";
+    // @GetMapping("/user/create")
+    @PostMapping("/user/create")
+    public User createNewUser(@RequestBody User user) {
+        return this.userService.handleCreateUser(user);
     }
 }
