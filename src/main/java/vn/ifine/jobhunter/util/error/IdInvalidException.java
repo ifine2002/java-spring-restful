@@ -1,4 +1,4 @@
-package vn.ifine.jobhunter.service.error;
+package vn.ifine.jobhunter.util.error;
 
 public class IdInvalidException extends Exception {
     // Constructor that accepts a message

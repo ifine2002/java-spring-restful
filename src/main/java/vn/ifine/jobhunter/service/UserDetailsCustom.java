@@ -9,11 +9,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component("userDetailsService")
-public class UserDetailCustom implements UserDetailsService {
+public class UserDetailsCustom implements UserDetailsService {
 
     private final UserService userService;
 
-    public UserDetailCustom(UserService userService) {
+    public UserDetailsCustom(UserService userService) {
         this.userService = userService;
     }
 
@@ -21,7 +21,9 @@ public class UserDetailCustom implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // TODO Auto-generated method stub
         vn.ifine.jobhunter.domain.User user = this.userService.handleUserByUsername(username);
-
+        if (user == null) {
+            throw new UsernameNotFoundException("Username/password không hợp lệ");
+        }
         return new User(
                 user.getEmail(),
                 user.getPassword(),
