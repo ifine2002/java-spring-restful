@@ -24,6 +24,7 @@ import com.turkraft.springfilter.boot.Filter;
 import vn.ifine.jobhunter.domain.User;
 import vn.ifine.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.ifine.jobhunter.service.UserService;
+import vn.ifine.jobhunter.util.annotation.ApiMessage;
 import vn.ifine.jobhunter.util.error.IdInvalidException;
 
 @RestController
@@ -63,6 +64,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
+    @ApiMessage("fetch all users")
     public ResponseEntity<ResultPaginationDTO> getAllUser(
             @Filter Specification<User> spec,
             Pageable pageable) {
