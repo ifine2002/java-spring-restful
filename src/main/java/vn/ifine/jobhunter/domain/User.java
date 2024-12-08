@@ -1,12 +1,17 @@
 package vn.ifine.jobhunter.domain;
 
+import java.time.Instant;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import vn.ifine.jobhunter.util.constant.GenderEnum;
 
 @Entity
 @Table(name = "users")
@@ -21,5 +26,17 @@ public class User {
     private String name;
     private String email;
     private String password;
+
+    private int age;
+
+    @Enumerated(EnumType.STRING)
+    private GenderEnum gender;
+
+    private String address;
+    private String refreshToken;
+    private Instant createdAt;
+    private Instant updatedAt;
+    private String createdBy;
+    private String updatedBy;
 
 }
