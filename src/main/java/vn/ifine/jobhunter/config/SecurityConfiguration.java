@@ -43,11 +43,11 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http,
             CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         http
+                .cors(Customizer.withDefaults())
                 .csrf(c -> c.disable())
                 .authorizeHttpRequests(
                         authorize -> authorize.requestMatchers("/", "/login").permitAll()
-                                // .anyRequest().authenticated())
-                                .anyRequest().authenticated())
+                                .anyRequest().permitAll())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(customAuthenticationEntryPoint))
                 // .exceptionHandling(
