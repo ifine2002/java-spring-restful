@@ -66,7 +66,7 @@ public class UserService {
                         item.getUpdatedAt(),
                         item.getCreatedAt()))
                 .collect(Collectors.toList());
-        rs.setResult(pageUser.getContent());
+        rs.setResult(listUser);
         return rs;
     }
 

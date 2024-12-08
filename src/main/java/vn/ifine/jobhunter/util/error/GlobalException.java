@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import jakarta.validation.ConstraintViolationException;
 import vn.ifine.jobhunter.domain.RestResponse;
 
 @RestControllerAdvice
@@ -44,7 +43,7 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
 
-    // xử lý 404 not found
+    // xử lý lỗi truyền sai định dạng PathVariable
     @ExceptionHandler(value = {
             MethodArgumentTypeMismatchException.class,
     })
