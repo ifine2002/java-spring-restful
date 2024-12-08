@@ -19,9 +19,10 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
+    // Xử lý exception valid ở GlobalException
     @PostMapping("/companies")
-    public ResponseEntity<Company> createNewCompany(@Valid @RequestBody Company reqcompany) {
-        Company newCompany = this.companyService.handleCreateCompany(company);
+    public ResponseEntity<Company> createNewCompany(@Valid @RequestBody Company reqCompany) {
+        Company newCompany = this.companyService.handleCreateCompany(reqCompany);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCompany);
     }
 }
