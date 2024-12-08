@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,8 +25,10 @@ import vn.ifine.jobhunter.domain.Company;
 import vn.ifine.jobhunter.domain.User;
 import vn.ifine.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.ifine.jobhunter.service.CompanyService;
+import vn.ifine.jobhunter.util.annotation.ApiMessage;
 
 @RestController
+@RequestMapping("/api/v1")
 public class CompanyController {
 
     private final CompanyService companyService;
@@ -42,6 +45,7 @@ public class CompanyController {
     }
 
     @GetMapping("/companies")
+    @ApiMessage("fetch all companies")
     public ResponseEntity<ResultPaginationDTO> getAllCompany(
             @Filter Specification<Company> spec, Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(this.companyService.fetchAllCompany(spec, pageable));
