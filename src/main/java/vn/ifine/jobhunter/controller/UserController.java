@@ -1,7 +1,10 @@
 package vn.ifine.jobhunter.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,9 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.ifine.jobhunter.domain.User;
+import vn.ifine.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.ifine.jobhunter.service.UserService;
 import vn.ifine.jobhunter.util.error.IdInvalidException;
 
@@ -55,9 +60,37 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUser() {
-        // return ResponseEntity.ok(this.userService.fetchAllUser());
-        return ResponseEntity.status(HttpStatus.OK).body(this.userService.fetchAllUser());
+    public ResponseEntity<ResultPaginationDTO> getAllUser(
+            @RequestParam("current") Optional<String> currentOptional,
+            @RequestParam("pageSize") Optional<String> pageSizeOptional) {
+
+        int page = 1;
+        try {
+            if (currentOptional.isPresent()) {
+                // convert from String to int
+                page = Integer.parseInt(currentOptional.get());
+            } else {
+                // page = 1
+            }
+        } catch (Exception e) {
+            // page = 1
+            // TODO: handle exception
+        }
+        int pageSize = 10;
+        try {
+            if (pageSizeOptional.isPresent()) {
+                // convert from String to int
+                pageSize = Integer.parseInt(pageSizeOptional.get());
+            } else {
+                // pageSize = 10
+            }
+        } catch (Exception e) {
+            // page = 10
+            // TODO: handle exception
+        }
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        // return ResponseEntity.ok(this.userService.fetchAllUser(pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.fetchAllUser(pageable));
     }
 
     @PutMapping("/users")
