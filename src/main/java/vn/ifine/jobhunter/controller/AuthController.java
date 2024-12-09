@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import vn.ifine.jobhunter.domain.dto.LoginDTO;
 import vn.ifine.jobhunter.domain.dto.ResLoginDTO;
 import vn.ifine.jobhunter.service.UserService;
 import vn.ifine.jobhunter.util.SecurityUtil;
+import vn.ifine.jobhunter.util.annotation.ApiMessage;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -38,7 +40,7 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
         // Nạp input gồm username/password vào Security
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
@@ -47,7 +49,7 @@ public class AuthController {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         // create a token
-        String access_token = this.securityUtil.createAccessToken(authentication);
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         ResLoginDTO res = new ResLoginDTO();
@@ -57,6 +59,8 @@ public class AuthController {
                     currentUserDB.getName());
             res.setUser(userLogin);
         }
+
+        String access_token = this.securityUtil.createAccessToken(authentication, res.getUser());
         res.setAccessToken(access_token);
 
         // create refresh token
@@ -77,6 +81,21 @@ public class AuthController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, resCookies.toString())
                 .body(res);
+    }
+
+    @GetMapping("/auth/account")
+    @ApiMessage("Fetch account")
+    public ResponseEntity<ResLoginDTO.UserLogin> getAccount() {
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
+
+        User curenUser = this.userService.handleUserByUsername(email);
+        ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin();
+        if (curenUser != null) {
+            userLogin.setId(curenUser.getId());
+            userLogin.setEmail(curenUser.getEmail());
+            userLogin.setName(curenUser.getName());
+        }
+        return ResponseEntity.ok(userLogin);
     }
 
 }
