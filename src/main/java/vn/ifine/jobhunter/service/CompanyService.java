@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.ifine.jobhunter.domain.Company;
-import vn.ifine.jobhunter.domain.User;
 import vn.ifine.jobhunter.domain.dto.Meta;
 import vn.ifine.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.ifine.jobhunter.repository.CompanyRepository;
