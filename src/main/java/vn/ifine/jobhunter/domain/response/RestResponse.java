@@ -1,4 +1,4 @@
-package vn.ifine.jobhunter.domain;
+package vn.ifine.jobhunter.domain.response;
 
 public class RestResponse<T> {
     private int statusCode;

@@ -15,15 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 import vn.ifine.jobhunter.domain.Company;
-import vn.ifine.jobhunter.domain.User;
-import vn.ifine.jobhunter.domain.dto.ResultPaginationDTO;
+import vn.ifine.jobhunter.domain.response.ResultPaginationDTO;
 import vn.ifine.jobhunter.service.CompanyService;
 import vn.ifine.jobhunter.util.annotation.ApiMessage;
 
