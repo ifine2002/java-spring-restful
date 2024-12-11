@@ -1,6 +1,7 @@
 package vn.ifine.jobhunter.util;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -14,7 +15,7 @@ import vn.ifine.jobhunter.domain.response.RestResponse;
 import vn.ifine.jobhunter.util.annotation.ApiMessage;
 
 @ControllerAdvice
-public class FormatRestResponse implements ResponseBodyAdvice {
+public class FormatRestResponse implements ResponseBodyAdvice<Object> {
     // 1. Phương thức kiểm tra có support format hay không
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
@@ -41,7 +42,7 @@ public class FormatRestResponse implements ResponseBodyAdvice {
         res.setStatusCode(status);
 
         // 2.3 Xử lý các trường hợp đặc biệt
-        if (body instanceof String) {
+        if (body instanceof String || body instanceof Resource) {
             return body; // Không format nếu response là String
         }
 
