@@ -49,7 +49,7 @@ public class JobController {
         if (!jobOptional.isPresent()) {
             throw new IdInvalidException("Job not found");
         }
-        return ResponseEntity.ok(this.jobService.update(job));
+        return ResponseEntity.ok(this.jobService.update(job, jobOptional.get()));
     }
 
     @DeleteMapping("/jobs/{id}")

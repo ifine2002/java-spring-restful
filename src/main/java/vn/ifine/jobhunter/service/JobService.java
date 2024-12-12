@@ -10,22 +10,27 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import vn.ifine.jobhunter.domain.Company;
 import vn.ifine.jobhunter.domain.Job;
 import vn.ifine.jobhunter.domain.Skill;
 import vn.ifine.jobhunter.domain.response.ResultPaginationDTO;
 import vn.ifine.jobhunter.domain.response.job.ResCreateJobDTO;
 import vn.ifine.jobhunter.domain.response.job.ResUpdateJobDTO;
+import vn.ifine.jobhunter.repository.CompanyRepository;
 import vn.ifine.jobhunter.repository.JobRepository;
 import vn.ifine.jobhunter.repository.SkillRepository;
 
 @Service
 public class JobService {
-    private JobRepository jobRepository;
-    private SkillRepository skillRepository;
+    private final JobRepository jobRepository;
+    private final SkillRepository skillRepository;
+    private final CompanyRepository companyRepository;
 
-    public JobService(JobRepository jobRepository, SkillRepository skillRepository) {
+    public JobService(JobRepository jobRepository, SkillRepository skillRepository,
+            CompanyRepository companyRepository) {
         this.jobRepository = jobRepository;
         this.skillRepository = skillRepository;
+        this.companyRepository = companyRepository;
     }
 
     public ResCreateJobDTO create(Job j) {
@@ -35,6 +40,13 @@ public class JobService {
 
             List<Skill> dbSkills = this.skillRepository.findByIdIn(reqSkills);
             j.setSkills(dbSkills);
+        }
+        // check company
+        if (j.getCompany() != null) {
+            Optional<Company> companyOptional = this.companyRepository.findById(j.getCompany().getId());
+            if (companyOptional.isPresent()) {
+                j.setCompany(companyOptional.get());
+            }
         }
 
         // create job
@@ -70,17 +82,34 @@ public class JobService {
         return this.jobRepository.findById(id);
     }
 
-    public ResUpdateJobDTO update(Job j) {
+    public ResUpdateJobDTO update(Job j, Job jobInDB) {
         // check skills
         if (j.getSkills() != null) {
             List<Long> reqSkills = j.getSkills().stream().map(x -> x.getId()).collect(Collectors.toList());
 
             List<Skill> dbSkills = this.skillRepository.findByIdIn(reqSkills);
-            j.setSkills(dbSkills);
+            jobInDB.setSkills(dbSkills);
+        }
+        // check company
+        if (j.getCompany() != null) {
+            Optional<Company> companyOptional = this.companyRepository.findById(j.getCompany().getId());
+            if (companyOptional.isPresent()) {
+                jobInDB.setCompany(companyOptional.get());
+            }
         }
 
+        // update correct info
+        jobInDB.setName(j.getName());
+        jobInDB.setSalary(j.getSalary());
+        jobInDB.setQuantity(j.getQuantity());
+        jobInDB.setLocation(j.getLocation());
+        jobInDB.setLevel(j.getLevel());
+        jobInDB.setStartDate(j.getStartDate());
+        jobInDB.setEndDate(j.getEndDate());
+        jobInDB.setActive(j.isActive());
+
         // update job
-        Job currentJob = this.jobRepository.save(j);
+        Job currentJob = this.jobRepository.save(jobInDB);
 
         // convert response
         ResUpdateJobDTO res = new ResUpdateJobDTO();

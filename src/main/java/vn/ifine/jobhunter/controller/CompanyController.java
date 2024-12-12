@@ -1,5 +1,7 @@
 package vn.ifine.jobhunter.controller;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -55,5 +57,12 @@ public class CompanyController {
     public ResponseEntity<Void> deleteCompany(@PathVariable("id") long id) {
         this.companyService.handleDeleteCompany(id);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/companies/{id}")
+    @ApiMessage("Fetch company by id")
+    public ResponseEntity<Company> fetchCompanyById(@PathVariable("id") long id) {
+        Optional<Company> companyOptional = this.companyService.findById(id);
+        return ResponseEntity.ok(companyOptional.get());
     }
 }
