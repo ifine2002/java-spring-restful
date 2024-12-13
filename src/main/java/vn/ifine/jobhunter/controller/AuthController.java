@@ -189,7 +189,7 @@ public class AuthController {
                 .body(null);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     @ApiMessage("Register a new user")
     public ResponseEntity<ResCreateUserDTO> register(@Valid @RequestBody User reqUser) throws IdInvalidException {
         boolean isEmailExist = this.userService.isEmailExist(reqUser.getEmail());
