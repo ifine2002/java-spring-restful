@@ -14,7 +14,7 @@ import vn.ifine.jobhunter.domain.Role;
 import vn.ifine.jobhunter.domain.User;
 import vn.ifine.jobhunter.service.UserService;
 import vn.ifine.jobhunter.util.SecurityUtil;
-import vn.ifine.jobhunter.util.error.IdInvalidException;
+import vn.ifine.jobhunter.util.error.PermissionException;
 
 public class PermissionInterceptor implements HandlerInterceptor {
 
@@ -50,10 +50,10 @@ public class PermissionInterceptor implements HandlerInterceptor {
                             && item.getMethod().equals(httpMethod));
 
                     if (isAllow == false) {
-                        throw new IdInvalidException("Bạn không có quyền truy cập endpoint này.");
+                        throw new PermissionException("Bạn không có quyền truy cập endpoint này.");
                     }
                 } else {
-                    throw new IdInvalidException("Bạn không có quyền truy cập endpoint này.");
+                    throw new PermissionException("Bạn không có quyền truy cập endpoint này.");
                 }
             }
         }
