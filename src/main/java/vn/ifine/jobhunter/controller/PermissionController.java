@@ -52,7 +52,10 @@ public class PermissionController {
 
         // check exist by module, apiPath and method
         if (this.permissionService.existsByModuleAndApiPathAndMethod(permission)) {
-            throw new IdInvalidException("Permission đã tồn tại");
+            // check name
+            if (this.permissionService.isSameName(permission)) {
+                throw new IdInvalidException("Permission đã tồn tại");
+            }
         }
         return ResponseEntity.ok(this.permissionService.update(permission));
     }
