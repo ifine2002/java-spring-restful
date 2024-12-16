@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import vn.ifine.jobhunter.domain.Subscriber;
 import vn.ifine.jobhunter.service.SubscriberService;
+import vn.ifine.jobhunter.util.SecurityUtil;
 import vn.ifine.jobhunter.util.annotation.ApiMessage;
 import vn.ifine.jobhunter.util.error.IdInvalidException;
 
@@ -44,5 +45,14 @@ public class SubscriberController {
             throw new IdInvalidException("Id " + subsRequest.getId() + " không tồn tại");
         }
         return ResponseEntity.ok().body(this.subscriberService.update(subsDB, subsRequest));
+    }
+
+    @PostMapping("/subscribers/skills")
+    @ApiMessage("Get subscriber's skill")
+    public ResponseEntity<Subscriber> getSubscribersSkill() {
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() == true ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+
+        return ResponseEntity.ok(this.subscriberService.findByEmail(email));
     }
 }
