@@ -1,9 +1,11 @@
 package vn.ifine.jobhunter.controller;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.transaction.Transactional;
 import vn.ifine.jobhunter.service.EmailService;
 import vn.ifine.jobhunter.service.SubscriberService;
 import vn.ifine.jobhunter.util.annotation.ApiMessage;
@@ -21,6 +23,8 @@ public class EmailController {
 
     @GetMapping("/email")
     @ApiMessage("Send simple email")
+    // @Scheduled(cron = "*/30 * * * * *")
+    // @Transactional
     public String sendSimpleEmail() {
         // this.emailService.sendSimpleEmail();
         // this.emailService.sendEmailSync("boyyhp1@gmail.com", "test send email",

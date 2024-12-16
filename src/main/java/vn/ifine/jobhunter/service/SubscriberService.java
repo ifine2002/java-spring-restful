@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import vn.ifine.jobhunter.domain.Job;
@@ -79,6 +80,11 @@ public class SubscriberService {
         res.setSkills(s);
         return res;
     }
+
+    // @Scheduled(fixedDelay = 2000)
+    // public void testCron() {
+    // System.out.println(">>>>> TEST CRON");
+    // }
 
     public void sendSubscribersEmailJobs() {
         List<Subscriber> listSubs = this.subscriberRepository.findAll();
